@@ -13,7 +13,7 @@ def request_meme(update: Update, callback_context: CallbackContext) -> None:
     
     #Enviamos foto
     meme = memes[randrange(len(memes))]
-    update.message.reply_photo(open(meme, 'rb'), caption = "Toma un meme")
+    update.message.reply_photo(meme, caption = "Toma un meme")
 
 
 def main() -> None:
