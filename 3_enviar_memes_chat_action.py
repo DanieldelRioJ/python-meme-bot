@@ -1,5 +1,5 @@
-from telegram import Update, ChatAction
-from telegram.ext import Updater, CallbackContext, CommandHandler
+from telegram import Update, ChatAction, InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto, error, InlineQueryResultPhoto
+from telegram.ext import Updater, CallbackContext, CommandHandler, CallbackQueryHandler, InlineQueryHandler
 
 from random import randrange
 
@@ -13,8 +13,26 @@ def request_meme(update: Update, callback_context: CallbackContext) -> None:
     
     #Enviamos foto
     meme = memes[randrange(len(memes))]
-    update.message.reply_photo(open(meme, 'rb'), caption = "Toma un meme")
+    keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Siguiente meme", callback_data="other")]])
+    update.message.reply_photo(meme, reply_markup=keyboard)
+    
+    
+def request_other_meme(update: Update, callback_context: CallbackContext) -> None:
+    
+    #Enviamos foto
+    meme = memes[randrange(len(memes))]
+    keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Siguiente meme", callback_data="other")]])
+    try:
+        update.callback_query.message.edit_media(InputMediaPhoto(meme), reply_markup=keyboard)
+    except error.BadRequest:
+        pass
+    update.callback_query.answer()
 
+
+def inline_callback(update: Update, callback_context: CallbackContext) -> None:
+    
+    results = [InlineQueryResultPhoto(str(i), meme, thumb_url=meme, caption ="Un meme gracioso") for i, meme in enumerate(memes)]
+    update.inline_query.answer(results)
 
 def main() -> None:
     
@@ -26,8 +44,9 @@ def main() -> None:
 
     # TODO: ADD HANDLERS
     
-    
+    dispatcher.add_handler(CallbackQueryHandler(request_other_meme, pattern="other"))
     dispatcher.add_handler(CommandHandler("meme", request_meme))
+    dispatcher.add_handler(InlineQueryHandler(inline_callback))
     
     # Arranca el bot
     updater.start_polling()
