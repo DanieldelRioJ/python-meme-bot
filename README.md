@@ -18,14 +18,14 @@ El username del bot tiene que ser único y acabar en "bot".
 ## 1_hello_world.py. 
 Responde con el texto que le pasamos en mayúsculas
 ## 2_enviar_memes.py. 
-Envia un meme como respuesta al comando /meme
+Envia un meme como respuesta al comando /meme. 
 Para ello primero tenemos que añadir el comando /meme desde nuestro BotFather, bien utilizando 
 ``` /setcommands ```
 o 
 ``` /mycommands > Edit bot > Edit commands```.
 ![alt text](resources/commands.jpg)
 
-De esta forma la App de Telegram sabrá que comandos tiene nuestro bot y se los mostrará al usuario cuando nuestro 
+De esta forma la App de Telegram sabrá que comandos tiene nuestro bot y se los mostrará al usuario. 
 
 ![alt text](resources/sendmeme.png)
 
